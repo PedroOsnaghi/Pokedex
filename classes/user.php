@@ -20,15 +20,16 @@ class User extends DB{
 
     public function getUserName($id){
 
-        $query_result = $this->query("SELECT name FROM user WHERE id =" . $this->connection->real_escape_string($id));
+        $query_result = $this->query("SELECT nombre FROM usuario WHERE id =" . $this->connection->real_escape_string($id));
         
         $rows = $query_result->fetch_assoc();
 
-        echo $rows['name'];
+        echo $rows['nombre'];
     }
 
-    public function Validate(){
-        
+    public function authenticate(){
+
+
     }
 
 }
