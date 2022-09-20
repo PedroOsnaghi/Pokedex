@@ -30,8 +30,6 @@ create table usuario(
                         esAdmin int
 );
 
-
-
 INSERT INTO tipo (tipo, imagen)
 VALUES ('sin tipo', NULL), -- 1
        ('acero', 'acero.jpeg'), -- 2
