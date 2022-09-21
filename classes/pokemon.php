@@ -105,16 +105,38 @@ class Pokemon extends DB{
         return $rows;
     }
 
-    public function search($id)
+    public function searchByNumber($value)
+    {
+
+        $query_result = $this->connection->query("SELECT * FROM pokemon p JOIN tipo t ON p.id_tipo = t.id WHERE p.numero = '" . $value ."'");
+
+        $rows = $query_result->fetch_all(MYSQLI_ASSOC);
+
+            
+        return $rows;
+        
+
+    }
+
+    public function searchByName($value)
     {
         
-        $query_result = $this->connection->query("SELECT * FROM pokemon WHERE id = " . $id);
+        $query_result = $this->connection->query("SELECT * FROM pokemon p JOIN tipo t ON p.id_tipo = t.id WHERE p.nombre = '" . $value ."'");
 
-        $rows = $query_result->fetch_assoc();
+        $rows = $query_result->fetch_all(MYSQLI_ASSOC);
 
-        if($rows){
-            // TODO(Pedro Osnaghi): Terminar
-        }
+            
+        return $rows;
+    }
 
+    public function searchByType($value)
+    {
+        
+        $query_result = $this->connection->query("SELECT * FROM pokemon p JOIN tipo t ON p.id_tipo = t.id WHERE t.tipo = '" . $value ."'");
+
+        $rows = $query_result->fetch_all(MYSQLI_ASSOC);
+
+            
+        return $rows;
     }
 }

@@ -19,9 +19,9 @@ class App{
     public function __construct()
     {
         //Verificamos si recibimos una clase por url
-        $class = isset($_REQUEST['c']) ? $_REQUEST['c'] : null;
+        $class = isset($_REQUEST['c']) ? $_REQUEST['c'] : false;
         //Verificamos si recibimos un  action a ejecutar
-        $method = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
+        $method = isset($_REQUEST['a']) ? $_REQUEST['a'] : false;
 
         if(!$class){
             //no hay clase -> vamos a Home
@@ -30,15 +30,22 @@ class App{
             //hay clase para instanciar
             if(class_exists($class))
                 $this->c = new $class();
-            else
-                $this->Error();    
-    
-            //llamamos su metodo
-            if(method_exists($this->c, $method))
-                isset($_REQUEST['id']) ? $this->c->{$method}($_REQUEST['id']) : $this->c->{$method}();
-            else
-                $this->Error();    
+            else{
+                echo $method;  
+                $this->Error(); 
+            }
+                 
+            if($method){
+                    //llamamos su metodo
+                if(method_exists($this->c, $method))
+                    isset($_REQUEST['id']) ? $this->c->{$method}($_REQUEST['id']) : $this->c->{$method}();
+                else
+                    $this->Error();
+            }
+            
 
+            
+            
             
         }
 
