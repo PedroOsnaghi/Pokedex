@@ -1,11 +1,17 @@
 <?php
 
+/**
+ * class Auth
+ * 
+ * Se encarga de gestionar el login y logout
+ * 
+ */
+
 
 class Auth{
 
     public function __construct()
     {
-            $this->view = new View();
             
             $this->session = new Session();
             $this->nombre_usuario = isset($_POST['user']) ? $_POST['user'] : false;
@@ -18,7 +24,7 @@ class Auth{
         if(!$this->nombre_usuario && !$this->password){
             $err = ['error' => true, 
                     'err_msg' => 'Debe especificar usuario y contraseña'];
-            $this->view->render('home', $err);        
+            App::index($err);      
         }else{
 
             $this->user = new User();
@@ -27,11 +33,11 @@ class Auth{
 
             if($this->user->Authenticate()){
                 $this->session->setCurrentUser($this->nombre_usuario);
-                $this->view->render('home');
+                App::index();
             }else{
                 $err = ['error' => true, 
                         'err_msg' => 'Usuario o contraseña inválidos'];
-                $this->view->render('home', $err);
+                App::index($err);
             }
 
         }  
@@ -39,7 +45,7 @@ class Auth{
 
     public function logout(){
         $this->session->closeSession();
-        $this->view->render('home');
+        App::index();
     }
 
 }

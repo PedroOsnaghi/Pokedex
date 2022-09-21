@@ -1,7 +1,12 @@
     <!--SECCION MAIN -->
 
     <main>
-        <h1>Main</h1>
+            <?php
+                foreach($this->data['pokemon'] as $row)
+                {
+                    echo  var_dump($row) . "</br>";
+                }
+            ?>
     </main>
         
     </body>

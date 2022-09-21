@@ -46,11 +46,12 @@ class App{
 
     }
 
-    public function index(){
+    public static function index($param = []){
         
         $view = new View();
-        
-        $view->render('home');
+        $poke = new Pokemon();
+        $param['pokemon'] = $poke->All();
+        $view->render('home', $param);
 
     }
 
