@@ -1,11 +1,10 @@
 <?php
 
-require_once('./autoload.php');
 
 
 class User extends DB{
 
-    private $nombre_usuario;
+    private $username;
     private $password;
 
     public function __construct()
@@ -14,21 +13,24 @@ class User extends DB{
         $this->view = new View();
     }
 
-    public function exist(){
-        echo "entraste al metodo Exist()";
+    //SETTERS
+
+    public function setUserName($value){
+        $this->username = $value;
     }
 
-    public function getUserName($id){
-
-        $query_result = $this->query("SELECT name FROM user WHERE id =" . $this->connection->real_escape_string($id));
-        
-        $rows = $query_result->fetch_assoc();
-
-        echo $rows['name'];
+    public function setPassword($value){
+        $this->password = $value;
     }
 
-    public function Validate(){
-        
+
+    public function Authenticate(){
+
+        $query_result = $this->query("SELECT * FROM usuario WHERE nombre = '" . $this->username . "' AND pwd = '" . $this->password . "'");
+
+        $auth = $query_result->fetch_assoc();
+
+        return $auth ? true : false;
     }
 
 }

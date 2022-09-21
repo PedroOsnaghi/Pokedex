@@ -1,5 +1,17 @@
 <?php
-//require_once('autoload.php');
+
+/**
+ * class App 
+ * 
+ * Se encarga de gestionar las peticiones get y generar los objetos y ejecutar metodos
+ * solicitados a traves de la url.
+ * 
+ * interpreta -> http://localhost/index.php?c=class&a=action&id
+ * 
+ * c=class => nombre de la clase
+ * a=action => nombre del metodo
+ * id (opcional) parametro
+ */
 
 
 class App{
@@ -12,7 +24,7 @@ class App{
         $method = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
 
         if(!$class){
-            //no hay clase -> vamos a pantalla principal
+            //no hay clase -> vamos a Home
             $this->index();
         }else{
             //hay clase para instanciar
@@ -35,16 +47,11 @@ class App{
     }
 
     public function index(){
-        $session = new Session();
-        $view = new View();
-        $params = [];
-       
-        if($session->getCurrentUser())
-            $params = ['session' => true];  //session admin
-        else
-            $params = ['session' => false];   //session publica
         
-        $view->render('home', $params);
+        $view = new View();
+        
+        $view->render('home');
+
     }
 
     private function Error(){

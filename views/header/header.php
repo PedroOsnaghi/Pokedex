@@ -11,20 +11,25 @@
         <?php if($this->data['session']){ ?> 
             <!-- SI EXISTE SESSION MOSTRAMOS DATOS ADMIN-->
             <div>
-                <h3><?php echo("Hola, " . $this->data['user']);?></h3>
-                <a href="">Cerrar Sesión</a>
+                <h3><?php echo("Hola, " . $this->data['session']);?></h3>
+                <a href="./index.php?c=auth&a=logout">Cerrar Sesión</a>
             </div>
 
         <?php }else{ ?>
             <!-- SI NO EXISTE SESSION MOSTRAMOS FORMULARIO LOGUIN-->
-            <div>
-                <form action="./index.php?c=user&a=login" method="post">
+            <div >
+                <form action="./index.php?c=auth&a=login" method="post">
                     <input type="text" name="user" id="">
                     <input type="password" name="pass" id="">
                     <input type="submit" value="Ingresar">
                 </form>
             </div>
           
-         <?php } ?>    
+         <?php } 
+         
+         if(isset($this->data['error']))
+            echo "<div class='error_msg'>" . $this->data['err_msg'] . "</div>";
+          
+         ?>    
        
     </header>
