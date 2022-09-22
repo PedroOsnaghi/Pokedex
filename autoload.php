@@ -1,9 +1,9 @@
 <?php
 
-//Carga automatica de clases
+//Carga automatica de clases de ./libs/
 
 function autoload($classname){
-    include("./classes/" . $classname . ".php");
+    include("./class/" . $classname . ".php");
 }
 
 spl_autoload_register('autoload');

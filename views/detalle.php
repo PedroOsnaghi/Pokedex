@@ -1,7 +1,7 @@
     <!--SECCION MAIN -->
 
     <main>
-        <form action="index.php?c=search" method="post">
+        <form action="index.php?c=manage&a=search" method="post">
             <input type="text" name="toSearch" id="">
             <input type="submit" value="Buscar">
         </form>

@@ -42,11 +42,7 @@ class App{
                 else
                     $this->Error();
             }
-            
-
-            
-            
-            
+                
         }
 
 
