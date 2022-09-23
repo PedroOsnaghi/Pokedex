@@ -52,13 +52,11 @@ class App{
     public static function index($param = []){
         
         $view = new View();
-        $poke = new Pokemon();
-        $param['pokemon'] = $poke->All();
-        $view->render('home', $param);
+        $mg = (new Manage())->init($param);
 
     }
 
     private function Error(){
-        echo "Pagina Inexistente";
+        $this-view->render('404');
     }
 }

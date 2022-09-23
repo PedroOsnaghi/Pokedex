@@ -3,6 +3,7 @@
 class view{
 
     private $data;
+    
 
     public function __construct(){
         $this->session = new Session();

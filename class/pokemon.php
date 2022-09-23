@@ -4,8 +4,8 @@ class Pokemon extends DB{
 
     private $id;
     private $number;
-    private $nombre;
-    private $tipo;
+    private $name;
+    private $type;
     private $description;
     private $file_image;
 
@@ -42,15 +42,15 @@ class Pokemon extends DB{
         return $this;
     }
 
-    public function getNombre()
+    public function getName()
     {
-        return $this->nombre;
+        return $this->name;
     }
 
  
-    public function setNombre($nombre)
+    public function setName($name)
     {
-        $this->nombre = $nombre;
+        $this->name = $name;
 
         return $this;
     }
@@ -138,5 +138,45 @@ class Pokemon extends DB{
 
             
         return $rows;
+    }
+
+    public function getByid($id)
+    {
+        $query_result = $this->connection->query("SELECT * FROM pokemon WHERE id = " . $id);
+
+
+        $row = $query_result->fetch_assoc();
+
+
+        if($row)
+        {
+            $this->id = $row['id'];
+            $this->number = $row['numero'];
+            $this->name = $row['nombre'];
+            $this->description = $row['descripcion'];
+            $this->type = $row['tipo'];
+            $this->file_image = $row['imagen'];
+
+            return $this;
+
+        }
+
+        return false;
+
+       
+    }
+
+    public function delete($id)
+    {
+        $query_result = $this->connection->query("DELETE FROM pokemon WHERE id = " . $id);
+
+        return $this->connection->affected_rows;
+    }
+
+    public function add()
+    {
+        $query_result = $this->connection->query("INSERT INTO pokemon (numero,nombre,descripcion,imagen,id_tipo) VALUES (" . $this->number . ",'" . $this->name . "','" . $this->description . "','" . $this->file_image . "'," . $this->type . ")");
+
+        return $this->connection->insert_id;
     }
 }
