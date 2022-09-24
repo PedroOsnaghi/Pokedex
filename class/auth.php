@@ -22,8 +22,10 @@ class Auth{
 
     public function login(){
         if(!$this->nombre_usuario && !$this->password){
-            $err = ['error' => true, 
-                    'err_msg' => 'Debe especificar usuario y contraseña'];
+            $err = ['message' => ['type' => 'error', 
+                                   'msg' => 'Debe especificar usuario y contraseña',
+                                   'from'=> 'login']
+                    ];
             App::index($err);      
         }else{
 
@@ -35,10 +37,12 @@ class Auth{
                 $this->session->setCurrentUser($this->nombre_usuario);
                 App::index();
             }else{
-                $err = ['error' => true, 
-                        'err_msg' => 'Usuario o contraseña inválidos'];
-                App::index($err);
-            }
+                $err = ['message' =>['type' => 'error', 
+                                      'msg' => 'Usuario o contraseña inválidos',
+                                      'from'=> 'login']
+                       ];
+            App::index($err);
+        }
 
         }  
     }

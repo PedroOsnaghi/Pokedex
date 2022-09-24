@@ -1,6 +1,8 @@
 <?php
 
 
+
+
 class DB{
 
     private $host;
@@ -14,6 +16,7 @@ class DB{
 
     public function __construct()
     {
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         //abrimos archivo de configuracion
         $config = parse_ini_file("./config/config.ini");
 
@@ -24,8 +27,17 @@ class DB{
         $this->pwd = $config['PASS'];
         $this->port = $config['PORT'];
 
+        try {
+            //code...
+            $this->connection = new mysqli($this->host, $this->user, $this->pwd, $this->dbname, $this->port);
+        } catch (mysqli_sql_exception $err) {
+             
+            view::error('connect-error', $err->getCode());
+        }
         
-        $this->connection = new mysqli($this->host, $this->user, $this->pwd, $this->dbname, $this->port);
+
+        //if($this->connection->connect_errno > 0)
+           
       
         return $this->connection;
         

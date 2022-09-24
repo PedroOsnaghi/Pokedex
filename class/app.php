@@ -11,6 +11,9 @@
  * c=class => nombre de la clase
  * a=action => nombre del metodo
  * id (opcional) parametro
+ * 
+ *  
+ * 
  */
 
 
@@ -30,10 +33,9 @@ class App{
             //hay clase para instanciar
             if(class_exists($class))
                 $this->c = new $class();
-            else{
-                echo $method;  
+            else
                 $this->Error(); 
-            }
+            
                  
             if($method){
                     //llamamos su metodo
@@ -51,12 +53,11 @@ class App{
 
     public static function index($param = []){
         
-        $view = new View();
         $mg = (new Manage())->init($param);
 
     }
 
-    private function Error(){
-        $this-view->render('404');
+    public static function Error(){
+        view::error('404');
     }
 }

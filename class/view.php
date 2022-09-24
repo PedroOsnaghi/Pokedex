@@ -28,5 +28,14 @@ class view{
     
     }
 
+    public static function error($type, $err_code = 0)
+    {
+        if ($err_code)
+            header("location: " . DIR_ROOT . "views/error/" . $type . ".php?code=" . $err_code
+        );
+        else
+            header("location: " . DIR_ROOT . "views/error/" . $type . ".php");  
+    }
+
 
 }

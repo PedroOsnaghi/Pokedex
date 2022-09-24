@@ -23,8 +23,14 @@ class File{
         
     }
 
+    public function getUploadFolder()
+    {
+        return $this->upload_folder;
+    }
+
     public function upload()
     {
+        
         if (isset($_FILES['archivo']) && $_FILES['archivo']['error'] == UPLOAD_ERR_OK)
         {
             
@@ -33,34 +39,44 @@ class File{
             $this->size = $_FILES['archivo']['size'];
             $this->tmp_name = $_FILES['archivo']['tmp_name'];
             $this->error = $_FILES['archivo']['error'];
+           
+            if(file_exists($this->upload_folder . $this->name))
+                    unlink($this->upload_folder . $this->name);
+                         
+            move_uploaded_file($this->tmp_name,  $this->upload_folder . $this->name);
 
-            if(file_exists($this->upload_folder . $this->name)){
-                
-                $res = ['message' => ['type' => 'error',
-                                      'msg' => 'El fichero que intenta subir ya existe en el servidor'
-                                 ]
-                         ];
-            }else{
-
-                move_uploaded_file($this->tmp_name,  $this->upload_folder . $this->name);
-
-                $res = UPLOAD_ERR_OK;
-            }
-
+            $res = UPLOAD_ERR_OK;
+            
+          
 
         }else{
-            $res = ['message' => ['type' => 'error',
-                                   'msg' => $this->getError($_FILES['archivo']['error'])
-                                 ]
-                   ]; 
+
+            $this->name = $this->default_filename;
+
+            if($this->error && $this->error != 4){
+                $res = ['message' => ['type' => 'error',
+                                      'msg' => $this->getError($this->error)
+                                     ]
+                        ]; 
+            }else{
+
+               
+                $res = UPLOAD_ERR_OK;
+            } 
+            
         }
 
         return $res;
     }
 
+    public function verifyUpload()
+    {
+        return (isset($_FILES['archivo']) && $_FILES['archivo']['error'] != 4) ? true : false;
+    }
+
     public function getUploadedFileName()
     {
-        return $this->upload_folder . $this->default_filename;
+        return  $this->name;
     }
 
     private function getError($err_code){
