@@ -14,10 +14,10 @@ class Manage{
 
     public function init($param)
     {
-        $param['pokemon'] = $this->poke->All();
+        $this->view->setList($this->poke->All());
         $param['upload_folder'] = $this->file->getUploadFolder();
         $param['tipo_folder'] = $this->tipo_pok_folder;
-        $this->view->render('home', $param);
+        $this->view->index($param);
     }
 
     public function search()
@@ -30,27 +30,25 @@ class Manage{
       
          //si no se busco nada mostramos todo
          if (empty($value)){
-             $param['pokemon'] = $this->poke->All();
+             $list = $this->poke->All();
          }else{
              //busca por numero
-             $param['pokemon'] = $this->poke->searchByAll($value);
+             $list = $this->poke->searchByAll($value);
  
-             if(!sizeof($param['pokemon'])){
+             if(!sizeof($list)){
                  
-                 $param['message'] = [
-                    'type' => 'info',
-                    'msg'  => 'Pokemon no encontrado.',
-                    'from' => 'manage' ];
-                $param['pokemon'] = $this->poke->All();
+                $this->view->senMessage($this, 'Pokemon no encontrado', view::MSG_INFO);
+                $list = $this->poke->All();
+
               }
          }
-         
-         $this->view->render('home', $param);
+         $this->view->setList($list);
+         $this->view->index($param);
     }
 
     public function get($id)
     {
-        $param['pokemon'] = $this->poke->getById($id);
+        $this->view->setObject($this->poke->getById($id));
         $param['upload_folder'] = $this->file->getUploadFolder();
         $param['tipo_folder'] = $this->tipo_pok_folder;
         $this->view->render('details', $param);
@@ -61,29 +59,19 @@ class Manage{
     {
         if($this->adminVerify())
         {
-            echo $id; 
+           
             $res = $this->poke->delete($id);
             
             if($res)
             {
-                $param = ['message' =>[
-                                        'type' => 'success',
-                                        'msg'  => 'Registro eliminado con éxito',
-                                        'from' => 'manage'
-                                      ]
-                         ];
+                $this->view->sendMessage($this, 'Registro eliminado con éxito', view::MSG_INFO);
             }
             else
             {
-                $param = ['message' =>[
-                                        'type' => 'error',
-                                        'msg'  => 'No se pudo eliminar el registro',
-                                        'from' => 'manage'
-                                    ]
-                        ];
+                $this->view->sendMessage($this, 'No se pudo eliminar el registro', view::MSG_DANGER);
             }
 
-            $this->init($param);
+            $this->view->index();
            
         }
 
@@ -92,7 +80,7 @@ class Manage{
     public function add()
     {
         if($this->adminVerify()){
-             $param['list-type'] = $this->poke->typeAll();
+             $this->view->setList($this->poke->typeAll());
              $param['upload_folder'] = $this->file->getUploadFolder();
              $this->view->render('add', $param);
         }
@@ -104,10 +92,11 @@ class Manage{
     {
         if($this->adminVerify())
         {
-            $param['pokemon'] = $this->poke->getById($id);
+            $this->view->setObject($this->poke->getById($id));
+            $this->view->setList($this->poke->typeAll());
             $param['upload_folder'] = $this->file->getUploadFolder();
             $param['tipo_folder'] = $this->tipo_pok_folder;
-            $param['list-type'] = $this->poke->typeAll();
+            
             $this->view->render('update', $param);
         }
        
@@ -138,7 +127,6 @@ class Manage{
             //y seteamos el campo con la nueva imagen
 
             if ($this->file->verifyUpload()){
-                echo "entra en verify";
                 $this->file->upload();
                 $this->poke->setFile_Image($this->file->getUploadedFileName());
             }
@@ -147,15 +135,15 @@ class Manage{
             $res = $this->poke->update();
 
             if($res)
-                $param = ['message' =>['type' => 'succes', 'msg' => 'Pokemon guardado con éxito', 'from' => 'manage']];
+                $this->view->sendMessage($this, 'Pokemon guardado con éxito', view::MSG_INFO);              
             else
-                $param = ['message' =>['type' => 'error', 'msg' => 'No se realizó modificaciones el Pokemon', 'from' => 'manage']];
+                $this->view->sendMessage($this, 'No se realizó modificaciones el Pokemon', view::MSG_DANGER);  
+            
            
-            $param['pokemon'] = $this->poke;
+            $this->view->setObject($this->poke);
+            $this->view->setList($this->poke->typeAll());
             $param['upload_folder'] = $this->file->getUploadFolder();
             $param['tipo_folder'] = $this->tipo_pok_folder;
-            $param['list-type'] = $this->poke->typeAll();
-
             $this->view->render('update', $param); 
 
 
@@ -170,14 +158,14 @@ class Manage{
 
             if($res){
                 
-                $res['values'] = [
+                $param['values'] = [
                                                 'numero' => $_POST['numero'],
                                                 'nombre' => $_POST['nombre'],
                                                 'desc'   => $_POST['descripcion'],
                                                 'tipo'   => $_POST['tipo'] 
                                 ];
                         
-                    
+                $this->view->sendMessage($this, $res, view::MSG_DANGER);    
                 $this->view->render('add', $res);
             }else{
                 //obtenemos los datos del formulario por POST y seteamos el objeto
@@ -191,21 +179,15 @@ class Manage{
                 $res = $this->poke->save();
 
                 if($res){
-                    $param = ['message' =>['type' => 'succes',
-                                            'msg' => 'Pokemon guardado con éxito', 
-                                            'from' => 'manage']];
-                                        
+                    $this->view->sendMessage($this, 'Pokemon guardado con éxito', view::MSG_SUCCESS);                       
                 }else{
-                    $param = ['message' =>['type' => 'error',
-                                            'msg' => 'Ocurrió un error al intentar guardar el Pokemon', 
-                                            'from' => 'manage'],
-                            'values' => [
-                                                'numero' => $_POST['numero'],
-                                                'nombre' => $_POST['nombre'],
-                                                'desc'   => $_POST['descripcion'],
-                                                'tipo'   => $_POST['tipo'] 
-                                            ]
-                            ];
+                    $this->view->sendMessage($this, 'Ocurrió un error al intentar guardar el Pokemon', view::MSG_DANGER);   
+                    $param['values'] = [
+                                            'numero' => $_POST['numero'],
+                                            'nombre' => $_POST['nombre'],
+                                            'desc'   => $_POST['descripcion'],
+                                            'tipo'   => $_POST['tipo'] 
+                                        ];
                 }
 
                 $this->view->render('add', $param);        

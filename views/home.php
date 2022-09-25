@@ -23,18 +23,7 @@ include_once('./views/header/header.php');
 
         <!-- MENSAJES -->
         
-        <?php
-            /**
-             * Si llego algun mensaje desde el Manage se muestra aca
-             */
-            if(isset($this->data['message']) && $this->data['message']['from'] == 'manage'){ ?>
-                <div class='container-lg'>
-                    <div class='alert alert-warning d-flex align-items-center' role='alert'>
-                        <i class='fa-solid fa-triangle-exclamation me-2'></i>
-                        <div><?php echo $this->data['message']['msg'] ?></div>
-                    </div> 
-                  </div>       
-        <?php } ?>
+        
 
 
         <!-- LISTADO -->

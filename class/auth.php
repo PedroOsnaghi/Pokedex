@@ -12,7 +12,7 @@ class Auth{
 
     public function __construct()
     {
-            
+            $this->view = new View();
             $this->session = new Session();
             $this->nombre_usuario = isset($_POST['user']) ? $_POST['user'] : false;
             $this->password = isset($_POST['pass']) ? $_POST['pass'] : false;    
@@ -22,11 +22,10 @@ class Auth{
 
     public function login(){
         if(!$this->nombre_usuario && !$this->password){
-            $err = ['message' => ['type' => 'error', 
-                                   'msg' => 'Debe especificar usuario y contraseña',
-                                   'from'=> 'login']
-                    ];
-            App::index($err);      
+
+            $this->view->sendMessage($this,'Debe especificar usuario y contraseña',view::MSG_DANGER);
+            $this->view->index();
+
         }else{
 
             $this->user = new User();
@@ -35,13 +34,10 @@ class Auth{
 
             if($this->user->Authenticate()){
                 $this->session->setCurrentUser($this->nombre_usuario);
-                App::index();
+                $this->view->index();
             }else{
-                $err = ['message' =>['type' => 'error', 
-                                      'msg' => 'Usuario o contraseña inválidos',
-                                      'from'=> 'login']
-                       ];
-            App::index($err);
+                $this->view->sendMessage($this,'Usuario o contraseña inválidos',view::MSG_DANGER);
+                $this->view->index();
         }
 
         }  
@@ -49,7 +45,7 @@ class Auth{
 
     public function logout(){
         $this->session->closeSession();
-        App::index();
+        $this->view->index();
     }
 
 }

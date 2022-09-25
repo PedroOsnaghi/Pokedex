@@ -54,10 +54,9 @@ class File{
             $this->name = $this->default_filename;
 
             if($this->error && $this->error != 4){
-                $res = ['message' => ['type' => 'error',
-                                      'msg' => $this->getError($this->error)
+                $res =  $this->getError($this->error)
                                      ]
-                        ]; 
+                         
             }else{
 
                

@@ -51,9 +51,9 @@ class App{
 
     }
 
-    public static function index($param = []){
+    private function index(){
         
-        $mg = (new Manage())->init($param);
+        (new view())->index();
 
     }
 
