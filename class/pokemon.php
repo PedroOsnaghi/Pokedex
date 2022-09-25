@@ -187,7 +187,7 @@ class Pokemon extends DB{
 
     public function delete($id)
     {
-        echo "DELETE FROM pokemon WHERE id =" . $id;
+       
         $query_result = $this->connection->query("DELETE FROM pokemon WHERE id =" . $id);
 
         return $this->connection->affected_rows;

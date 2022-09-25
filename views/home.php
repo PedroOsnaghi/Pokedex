@@ -15,7 +15,7 @@ include_once('./views/header/header.php');
              <form action="index.php?c=manage&a=search" method="post">
                 <div  class="input-group mb-3">
                     <input class="form-control" type="text" name="toSearch" id="" placeholder="Ingrese número, nombre o tipo de Pokemón" value="<?php echo isset($this->data['value'])? $this->data['value'] : '' ?>">
-                    <input class="btn btn-primary" type="submit" style="font-family: fontawesome" value="" >
+                    <input class="btn btn-primary" type="submit" style="font-family: fontawesome" value=""  >
                 </div>   
             </form>
         </div>

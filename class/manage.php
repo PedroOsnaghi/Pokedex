@@ -24,6 +24,7 @@ class Manage{
     {
          //Capturamos el valor a buscar por POST
          $value = isset($_POST['toSearch']) ? $_POST['toSearch'] : '';
+         
          $param['value'] = $value;
          $param['upload_folder'] = $this->file->getUploadFolder();
          $param['tipo_folder'] = $this->tipo_pok_folder;
@@ -38,10 +39,10 @@ class Manage{
              if(!sizeof($param['pokemon'])){
                  
                  $param['message'] = [
-                    'type' => 'info',
-                    'msg'  => 'Pokemon no encontrado.',
-                    'from' => 'manage' ];
-                $param['pokemon'] = $this->poke->All();
+                                        'type' => 'info',
+                                        'msg'  => 'Pokemon no encontrado.',
+                                        'from' => 'manage' ];
+                 $param['pokemon'] = $this->poke->All();
               }
          }
          
@@ -61,7 +62,7 @@ class Manage{
     {
         if($this->adminVerify())
         {
-            echo $id; 
+           
             $res = $this->poke->delete($id);
             
             if($res)
@@ -81,6 +82,7 @@ class Manage{
                                         'from' => 'manage'
                                     ]
                         ];
+                        $this->view->sendMessage($this, 'Hola munso', view::MSG_SUCCESS);
             }
 
             $this->init($param);
