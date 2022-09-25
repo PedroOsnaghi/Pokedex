@@ -1,11 +1,8 @@
-<?php
+<!-- HEADER -->
 
-include_once('./views/header/header.php');
+<?php include_once('./views/header/header.php') ?>
 
-
-
-?>
-    
+<!-- CONTENT -->
 
     <div class="container-lg">
         <div class="d-flex align-items-center">
@@ -39,7 +36,7 @@ include_once('./views/header/header.php');
                     <form class="d-flex flex-column flex-md-row" action="./index.php?c=manage&a=save" method="post" enctype="multipart/form-data" >
                             <!-- IMAGEN -->    
                             <div class="col-md-4 col px-3 center">
-                                <img class="rounded mx-auto img-thumbnail mb-3 d-block" src="<?php echo DIR_ROOT ?>uploads/default/default.jpg" alt="" id='preview' max-width="300px"/>
+                                <img class="rounded mx-auto img-thumbnail mb-3 d-block" src="<?php echo DIR_ROOT . $this->data['upload_folder'] ?>default/default.jpg" alt="" id='preview' max-width="300px"/>
                                 <input class="form-control" type="file" name="archivo" id="file" >
                             </div>
                             <div class="col-md-8 col px-3">

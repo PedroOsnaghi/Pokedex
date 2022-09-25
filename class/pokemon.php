@@ -6,8 +6,10 @@ class Pokemon extends DB{
     private $number;
     private $name;
     private $type;
+    private $type_name;
     private $description;
     private $file_image;
+    private $file_type;
 
     public function __construct(){
         parent::__construct();
@@ -68,6 +70,18 @@ class Pokemon extends DB{
         return $this;
     }
 
+    public function getType_name()
+    {
+        return $this->type_name;
+    }
+
+    public function setType_name($type)
+    {
+        $this->type_name = $type;
+
+        return $this;
+    }
+
     
     public function getDescription()
     {
@@ -95,6 +109,21 @@ class Pokemon extends DB{
 
         return $this;
     }
+
+    public function getFile_type()
+    {
+        return $this->file_type;
+    }
+
+   
+    public function setFile_type($file_type)
+    {
+        $this->file_type = $file_type;
+
+        return $this;
+    }
+
+
 
     public function All()
     {
@@ -130,7 +159,7 @@ class Pokemon extends DB{
 
     public function getById($id)
     {
-        $query_result = $this->connection->query("SELECT * FROM pokemon WHERE id = " . $id);
+        $query_result = $this->connection->query("SELECT * FROM pokemon p JOIN tipo t ON p.id_tipo = t.id_tipo WHERE id = " . $id);
 
 
         $row = $query_result->fetch_assoc();
@@ -144,6 +173,8 @@ class Pokemon extends DB{
             $this->description = $row['descripcion'];
             $this->type = $row['id_tipo'];
             $this->file_image = $row['imagen'];
+            $this->file_type = $row['tipo_imagen'];
+            $this->type_name = $row['tipo'];
 
             return $this;
 
@@ -156,7 +187,8 @@ class Pokemon extends DB{
 
     public function delete($id)
     {
-        $query_result = $this->connection->query("DELETE FROM pokemon WHERE id = " . $id);
+        echo "DELETE FROM pokemon WHERE id =" . $id;
+        $query_result = $this->connection->query("DELETE FROM pokemon WHERE id =" . $id);
 
         return $this->connection->affected_rows;
     }
@@ -171,7 +203,7 @@ class Pokemon extends DB{
     public function update()
     {
         $query_result = $this->connection->query("UPDATE pokemon SET numero=" . $this->number . " ,nombre='" . $this->name . "' ,descripcion= '" . $this->description . "',imagen='" . $this->file_image . "' ,id_tipo=" . $this->type . " WHERE id=" . $this->id);
-
+       
         return $this->connection->affected_rows;
     }
 }

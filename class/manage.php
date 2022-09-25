@@ -51,6 +51,8 @@ class Manage{
     public function get($id)
     {
         $param['pokemon'] = $this->poke->getById($id);
+        $param['upload_folder'] = $this->file->getUploadFolder();
+        $param['tipo_folder'] = $this->tipo_pok_folder;
         $this->view->render('details', $param);
         
     }
@@ -59,6 +61,7 @@ class Manage{
     {
         if($this->adminVerify())
         {
+            echo $id; 
             $res = $this->poke->delete($id);
             
             if($res)
@@ -90,6 +93,7 @@ class Manage{
     {
         if($this->adminVerify()){
              $param['list-type'] = $this->poke->typeAll();
+             $param['upload_folder'] = $this->file->getUploadFolder();
              $this->view->render('add', $param);
         }
            
@@ -103,6 +107,7 @@ class Manage{
             $param['pokemon'] = $this->poke->getById($id);
             $param['upload_folder'] = $this->file->getUploadFolder();
             $param['tipo_folder'] = $this->tipo_pok_folder;
+            $param['list-type'] = $this->poke->typeAll();
             $this->view->render('update', $param);
         }
        
@@ -112,19 +117,23 @@ class Manage{
     {
         if($this->adminVerify())
         {
-            //obtenemos los datos del formulario por POST y seteamos el objeto
+            //verificamos el acceso desde url sin cargar formulario
             if(!isset($_POST['numero']))
-                $this->view->error('no-access');
+                $this->view->error('no-access');  
 
-             
+            //recargamos valores viejos
+            $this->poke->getById($id);
+
+            //obtenemos los datos del formulario por POST y seteamos el objeto
+            
             //seteamos el objeto
             $this->poke->setId($id);
             $this->poke->setNumber($_POST['numero']);
             $this->poke->setName($_POST['nombre']);
             $this->poke->setDescription($_POST['descripcion']);
-            $this->poke->setType($_POST['tipo']);    
-            $this->poke->setFile_Image($_POST['file-image']);
-
+            if (isset($_POST['tipo']))
+                $this->poke->setType($_POST['tipo']);    
+        
             //verificamos si se cambio la imagen, de ser asi se guarda
             //y seteamos el campo con la nueva imagen
 
@@ -134,7 +143,6 @@ class Manage{
                 $this->poke->setFile_Image($this->file->getUploadedFileName());
             }
                 
-            
 
             $res = $this->poke->update();
 
@@ -146,6 +154,7 @@ class Manage{
             $param['pokemon'] = $this->poke;
             $param['upload_folder'] = $this->file->getUploadFolder();
             $param['tipo_folder'] = $this->tipo_pok_folder;
+            $param['list-type'] = $this->poke->typeAll();
 
             $this->view->render('update', $param); 
 

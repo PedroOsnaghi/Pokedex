@@ -80,7 +80,7 @@ include_once('./views/header/header.php');
                                         <a href="<?php echo DIR_ROOT ?>index.php?c=manage&a=modify&id=<?php echo $row['id'] ?>" class='p-md-2 p-1 m-1 btn btn-secondary' title='Modificar Pokemon'>
                                         <i class='fa-solid fa-pen-to-square'></i>
                                         </a>
-                                        <a href="<?php echo DIR_ROOT ?>index.php?c=manage&a=get&id=<?php echo $row['id'] ?>" class='p-md-2 p-1 m-1 btn btn-secondary' title='Eliminar Pokemon' data-bs-toggle='modal' data-bs-target='#confirm'>
+                                        <a href="<?php echo DIR_ROOT ?>index.php?c=manage&a=delete&id=<?php echo $row['id'] ?>" app_tag="btn-delete" class='p-md-2 p-1 m-1 btn btn-secondary' title='Eliminar Pokemon' data-bs-toggle='modal' data-bs-target='#confirm'>
                                         <i class='fa-solid fa-trash'></i> 
                                         </a>    
                                     </div>
@@ -122,7 +122,7 @@ include_once('./views/header/header.php');
             </div>
             <div class="modal-footer">
                 <a href="" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</a>
-                <a href="<?php DIR_ROOT ?>index.php?c=manage&a=delete&id=<?php echo $row['id'] ?>" class="btn btn-primary">Si, quiero eliminarlo</a>
+                <a href="" id="btn-confirm" class="btn btn-primary">Si, quiero eliminarlo</a>
             </div>
             </div>
         </div>
@@ -136,6 +136,24 @@ include_once('./views/header/header.php');
         
 </body>
 <script src="<?php echo DIR_ROOT ?>public/js/bootstrap.bundle.js"></script>
+
+
+<!-- SCRIPT PARA HREF DE MODAL -->
+<script>
+    var conf = document.getElementById('btn-confirm');
+    
+    document.querySelectorAll("a[app_tag='btn-delete']").forEach(function(a){
+         a.addEventListener('click', function(){
+        console.log(a.href);
+        conf.href = a.href;
+        });
+    });
+         
+       
+    
+    
+   
+</script>
 </html>
 
 
