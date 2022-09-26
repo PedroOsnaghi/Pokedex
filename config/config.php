@@ -16,3 +16,5 @@ const DIR_ROOT = "http://localhost/TP_POKEMON/";
 const UPLOAD_FILE_FOLDER = 'public/img/pokemon/';
 //carpeta donde se encuentran las imagenes de tipos de pokemon
 const TYPE_FILE_FOLDER = 'public/img/tipos/';
+
+const APP_VERSION = 1.0;

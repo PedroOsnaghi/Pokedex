@@ -17,7 +17,8 @@
     <header>
         <nav class="navbar navbar-dark bg-dark mb-3">
             <div class="container-lg">
-                <a class="navbar-brand  ">Pokedex</a>
+                <a class="navbar-brand" href="<?php DIR_ROOT?>">Pokedex <small><?php echo "v" . APP_VERSION ?></small></a>
+                
                 <?php if($this->session_admin){ ?> 
                             <!-- SI EXISTE SESSION MOSTRAMOS DATOS ADMIN-->
                             <div class="d-flex align-items-center">

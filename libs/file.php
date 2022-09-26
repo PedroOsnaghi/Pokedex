@@ -15,9 +15,6 @@ class File{
 
     public function __construct()
     {
-        //abrimos archivo de configuracion
-        $conf = parse_ini_file("./config/config.ini");
-        $this-> upload_folder = $conf['UPLOAD_FILE_FOLDER'];
         $this-> default_filename = 'default/default.jpg';
         
     }
