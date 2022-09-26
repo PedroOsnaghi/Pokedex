@@ -33,10 +33,10 @@ class File{
             $this->tmp_name = $_FILES['archivo']['tmp_name'];
             $this->error = $_FILES['archivo']['error'];
            
-            if(file_exists($this->upload_folder . $this->name))
-                    unlink($this->upload_folder . $this->name);
+            if(file_exists(UPLOAD_FILE_FOLDER . $this->name))
+                    unlink(UPLOAD_FILE_FOLDER . $this->name);
                          
-            move_uploaded_file($this->tmp_name,  $this->upload_folder . $this->name);
+            move_uploaded_file($this->tmp_name,  UPLOAD_FILE_FOLDER . $this->name);
 
             $res = UPLOAD_ERR_OK;
             
