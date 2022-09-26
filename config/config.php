@@ -2,15 +2,15 @@
 
 //parametros para coneccion a Base de datos
 const DB_USERNAME = 'root';
-const DB_PASS = '123456';
+const DB_PASS = '';
 const DB_HOST = 'localhost';
-const DB_PORT = '3307';
+const DB_PORT = '3306';
 const DB_DATABASE = 'pokedex';
 
 //parametros de aplicacion
 
 //ruta raiz
-const DIR_ROOT = "http://localhost/pokedex/";
+const DIR_ROOT = "http://localhost/workspace/TP-Pokedex/Pokedex/";
 
 //carpeta donde se guardan archivos subidos
 const UPLOAD_FILE_FOLDER = 'public/img/pokemon/';
