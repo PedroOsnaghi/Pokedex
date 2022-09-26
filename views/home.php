@@ -5,7 +5,7 @@ include_once('views/header/header.php');
 ?>
 <!--HTML:LISTA DE POKEMON -->
 
-    <main>
+    <main style="min-height: 700px;">
        
 
        <!-- BUSQUEDA -->
