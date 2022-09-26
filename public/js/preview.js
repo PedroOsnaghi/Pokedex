@@ -1,16 +1,19 @@
 var f = document.getElementById('file');
 var reader = new FileReader();
+var img = document.getElementById('preview');
+
+
 
 
 
 f.addEventListener('change', function(){
-    console.log('change');
+    console.log(document.files.file.value);
     filePreview(this);
 });
 
 function filePreview(input) {
 
-    console.log(input.files);
+    
 
     if (input.files && input.files[0]) {
 
@@ -24,12 +27,14 @@ function filePreview(input) {
 
             var img = document.getElementById('preview');
             img.src = e.target.result;
-            console.log(e.target.result);
+            
 
         });
 
    
 
 }
+
+
 
 }

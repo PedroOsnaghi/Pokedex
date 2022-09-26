@@ -8,7 +8,6 @@ class File{
     private $tmp_name;
     private $error;
 
-    private $upload_folder;
     private $default_filename;
 
 
@@ -23,10 +22,7 @@ class File{
         
     }
 
-    public function getUploadFolder()
-    {
-        return $this->upload_folder;
-    }
+ 
 
     public function upload()
     {
@@ -54,12 +50,11 @@ class File{
             $this->name = $this->default_filename;
 
             if($this->error && $this->error != 4){
-                $res =  $this->getError($this->error)
-                                     ]
+                
+                $res =  $this->getError($this->error);
                          
             }else{
 
-               
                 $res = UPLOAD_ERR_OK;
             } 
             

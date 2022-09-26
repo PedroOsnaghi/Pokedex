@@ -51,9 +51,9 @@ class App{
 
     }
 
-    private function index(){
+    public static function index($app_msg = AppMsg::MSG_NONE){
         
-        (new view())->index();
+        (new manage())->init($app_msg);
 
     }
 

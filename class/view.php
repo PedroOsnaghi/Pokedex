@@ -2,26 +2,21 @@
 
 class view{
 
-    const MSG_INFO = 0;
-    const MSG_DANGER = 1;
-    const MSG_SUCCESS = 2
+    
 
     private $data;
-
+    private $msg;
     private $object;
-    private $list;
-    private $message;
-    private $msg_from;
-    private $msg_type;
+    private $list = [];
+    private $value_list = [];
+   
     private $session_admin;
     
     
 
     public function __construct(){
         $this->session = new Session();
-        $this->msg_from = null;
-        $this->message = '';
-        $this->msg_from = '';
+       
         $this->session_admin = false;
     }
 
@@ -33,17 +28,26 @@ class view{
         $this->list = $list;
     }
 
+    public function setSessionAdmin($session){
+        $this->session_admin = $session;
+    }
+
     public function showAlertFrom($from){
-        if($this->msg_from == $from) include('./views/alert/alert.php');
+        if($this->msg && $this->msg->getFrom() == $from) include('./views/alert/alert.php');
     }
 
-    public function sendMessage($from, $message, $type = view::MSG_INFO){
-        $this->msg_from = get_class($from);
-        $this->msg_type = $type;
-        $this->message = $message;
+    public function sendMessage($app_msg){
+        
+        if ($app_msg == AppMsg::MSG_NONE) return true;
+
+        //setea el mensaje
+        $this->msg = $app_msg;
     }
 
-
+    public function setInputValues($values){
+      
+        $this->value_list['values'] = $values;
+    }
 
 
 
@@ -52,10 +56,10 @@ class view{
      * @param Array $dato Arreglo de envio de datos a vista.
      * @return void
      */
-    public function render($nombreVista, $dato = []){
+    public function render($nombreVista){
         
-        $this->data = $dato;
-        //Si hay Session activa de administrador => $data['session'] = username para que 
+        
+        //Si hay Session activa de administrador => $session_admin = username para que 
         //la vista presente controles de administrador
         //si no hay session activa se establece en false
         $this->session_admin = $this->session->getCurrentUser();  
@@ -64,9 +68,7 @@ class view{
     
     }
 
-    public function index($dato = []){
-        $this->render('home', $dato);
-    }
+    
 
     public static function error($type, $err_code = 0)
     {

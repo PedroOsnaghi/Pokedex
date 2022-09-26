@@ -10,9 +10,13 @@
 
 class Auth{
 
+    
+    private $err;
+    
+
     public function __construct()
     {
-            $this->view = new View();
+            
             $this->session = new Session();
             $this->nombre_usuario = isset($_POST['user']) ? $_POST['user'] : false;
             $this->password = isset($_POST['pass']) ? $_POST['pass'] : false;    
@@ -21,11 +25,13 @@ class Auth{
     }
 
     public function login(){
+
+        //verificacion que se se envio usuario y pass
         if(!$this->nombre_usuario && !$this->password){
 
-            $this->view->sendMessage($this,'Debe especificar usuario y contraseña',view::MSG_DANGER);
-            $this->view->index();
-
+            //responde con objeto AppMsg
+            $resp = new AppMsg($this, 'Debe especificar usuario y contraseña', AppMsg::MSG_DANGER);
+   
         }else{
 
             $this->user = new User();
@@ -33,19 +39,27 @@ class Auth{
             $this->user->setPassword($this->password);
 
             if($this->user->Authenticate()){
+                
+                //setea session y envia respuesta
                 $this->session->setCurrentUser($this->nombre_usuario);
-                $this->view->index();
+                $resp = AppMsg::MSG_NONE;
+
             }else{
-                $this->view->sendMessage($this,'Usuario o contraseña inválidos',view::MSG_DANGER);
-                $this->view->index();
+                
+                //no pasa autenticacion responde con objeto AppMsg
+                $resp = new AppMsg($this, 'Usuario o contraseña inválidos', AppMsg::MSG_DANGER);
+                
+            }
+
         }
 
-        }  
+        return app::index($resp);
     }
 
     public function logout(){
+        //cierre de session y vuelve a index
         $this->session->closeSession();
-        $this->view->index();
+        app::index();
     }
 
 }

@@ -206,4 +206,12 @@ class Pokemon extends DB{
        
         return $this->connection->affected_rows;
     }
+
+    public function exist($value)
+    {
+        $query_result = $this->connection->query("SELECT * FROM pokemon WHERE numero = " . $value);
+
+
+        return $query_result->fetch_assoc() ? true : false;
+    }
 }

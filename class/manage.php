@@ -8,26 +8,22 @@ class Manage{
         $this->poke = new Pokemon();
         $this->session = new Session();
         $this->file = new File();
-        $conf = parse_ini_file("./config/config.ini");
-        $this->tipo_pok_folder = $conf['TIPO_FILE_FOLDER'];
+       
     }
 
-    public function init($param)
+    public function init($app_msg)
     {
         $this->view->setList($this->poke->All());
-        $param['upload_folder'] = $this->file->getUploadFolder();
-        $param['tipo_folder'] = $this->tipo_pok_folder;
-        $this->view->index($param);
+        $this->view->sendMessage($app_msg);
+       
+        $this->view->render('home');
     }
 
     public function search()
     {
          //Capturamos el valor a buscar por POST
          $value = isset($_POST['toSearch']) ? $_POST['toSearch'] : '';
-         $param['value'] = $value;
-         $param['upload_folder'] = $this->file->getUploadFolder();
-         $param['tipo_folder'] = $this->tipo_pok_folder;
-      
+         
          //si no se busco nada mostramos todo
          if (empty($value)){
              $list = $this->poke->All();
@@ -37,21 +33,25 @@ class Manage{
  
              if(!sizeof($list)){
                  
-                $this->view->senMessage($this, 'Pokemon no encontrado', view::MSG_INFO);
+                //envia mensaje y lista todos
+                $this->view->sendMessage(new AppMsg($this, 'Pokemon no encontrado', AppMsg::MSG_INFO));
                 $list = $this->poke->All();
 
               }
          }
+
+         //envia a la vista el valor buscado para mostrarlo en el input
+         $this->view->setInputValues(['toSearch' => $value]);
+         //envia lista
          $this->view->setList($list);
-         $this->view->index($param);
+         //muestra
+         $this->view->render('home');
     }
 
     public function get($id)
     {
         $this->view->setObject($this->poke->getById($id));
-        $param['upload_folder'] = $this->file->getUploadFolder();
-        $param['tipo_folder'] = $this->tipo_pok_folder;
-        $this->view->render('details', $param);
+        $this->view->render('details');
         
     }
 
@@ -64,14 +64,15 @@ class Manage{
             
             if($res)
             {
-                $this->view->sendMessage($this, 'Registro eliminado con éxito', view::MSG_INFO);
+                $this->view->sendMessage(new AppMsg($this, 'Registro eliminado con éxito', AppMsg::MSG_INFO));
             }
             else
             {
-                $this->view->sendMessage($this, 'No se pudo eliminar el registro', view::MSG_DANGER);
+                $this->view->sendMessage(new AppMsg($this, 'No se pudo eliminar el registro', AppMsg::MSG_DANGER));
             }
 
-            $this->view->index();
+            $this->view->setList($this->poke->All());
+            $this->view->render('home');
            
         }
 
@@ -80,9 +81,9 @@ class Manage{
     public function add()
     {
         if($this->adminVerify()){
+            //seteamos la lista de tipos 
              $this->view->setList($this->poke->typeAll());
-             $param['upload_folder'] = $this->file->getUploadFolder();
-             $this->view->render('add', $param);
+             $this->view->render('add');
         }
            
 
@@ -135,9 +136,9 @@ class Manage{
             $res = $this->poke->update();
 
             if($res)
-                $this->view->sendMessage($this, 'Pokemon guardado con éxito', view::MSG_INFO);              
+                $this->view->sendMessage($this, 'Pokemon guardado con éxito', AppMsg::MSG_INFO);              
             else
-                $this->view->sendMessage($this, 'No se realizó modificaciones el Pokemon', view::MSG_DANGER);  
+                $this->view->sendMessage($this, 'No se realizó modificaciones el Pokemon', AppMsg::MSG_DANGER);  
             
            
             $this->view->setObject($this->poke);
@@ -153,21 +154,25 @@ class Manage{
 
     public function save(){
         if($this->adminVerify()){
+
+            //validaciones necesarias
+            if(!$this->Validate()) return $this->add();
+
             //obtenemos la imagen subida
             $res = $this->file->upload();
 
+            //si ocurre algun problema en la subida de imagen
             if($res){
+                //retornamos los valores obtenidos
+                $this->view->setInputValues(['numero' => $_POST['numero'],
+                                             'nombre' => $_POST['nombre'],
+                                             'desc'   => $_POST['descripcion'],
+                                             'tipo'   => $_POST['tipo']]);
+                //enviamos mensaje de error        
+                $this->view->sendMessage(new AppMsg($this, $res, AppMsg::MSG_DANGER));    
                 
-                $param['values'] = [
-                                                'numero' => $_POST['numero'],
-                                                'nombre' => $_POST['nombre'],
-                                                'desc'   => $_POST['descripcion'],
-                                                'tipo'   => $_POST['tipo'] 
-                                ];
-                        
-                $this->view->sendMessage($this, $res, view::MSG_DANGER);    
-                $this->view->render('add', $res);
             }else{
+                
                 //obtenemos los datos del formulario por POST y seteamos el objeto
                 
                 $this->poke->setNumber($_POST['numero']);
@@ -179,23 +184,51 @@ class Manage{
                 $res = $this->poke->save();
 
                 if($res){
-                    $this->view->sendMessage($this, 'Pokemon guardado con éxito', view::MSG_SUCCESS);                       
+                    $this->view->sendMessage(new AppMsg($this, 'Pokemon guardado con éxito', AppMsg::MSG_SUCCESS));                       
                 }else{
-                    $this->view->sendMessage($this, 'Ocurrió un error al intentar guardar el Pokemon', view::MSG_DANGER);   
-                    $param['values'] = [
-                                            'numero' => $_POST['numero'],
-                                            'nombre' => $_POST['nombre'],
-                                            'desc'   => $_POST['descripcion'],
-                                            'tipo'   => $_POST['tipo'] 
-                                        ];
+                    //retornamos los valores obtenidos
+                    $this->view->setInputValues(['numero' => $_POST['numero'],
+                                                 'nombre' => $_POST['nombre'],
+                                                 'desc'   => $_POST['descripcion'],
+                                                 'tipo'   => $_POST['tipo']]);
+                    //enviamos mensaje de error
+                    $this->view->sendMessage(new AppMsg($this, 'Ocurrió un error al intentar guardar el Pokemon', AppMsg::MSG_DANGER));                                
                 }
-
-                $this->view->render('add', $param);        
+                
+                //volvemos a la vista
+                return $this->view->render('add');
+                  
 
             }
         }
          
          
+    }
+
+    private function Validate(){
+         if(!isset($_POST['tipo'])){
+
+            //enviamos mensaje de error        
+            $this->view->sendMessage(new AppMsg($this,'Debe seleccionar un Tipo de Pokemon', AppMsg::MSG_DANGER)); 
+
+         }elseif($this->poke->exist($_POST['numero'])){
+            
+            //enviamos mensaje de error        
+            $this->view->sendMessage(new AppMsg($this,'Ya existe un Pokemon con el numero que intenta asignar', AppMsg::MSG_DANGER)); 
+          
+        }else{
+            return true;
+        }
+        
+        //retornamos los valores obtenidos
+        $this->view->setInputValues(['numero' => $_POST['numero'],
+        'nombre' => $_POST['nombre'],
+        'desc'   => $_POST['descripcion'],
+        'tipo' => isset($_POST['tipo']) ? $_POST['tipo'] : '0',
+        'img_src' => isset($_FILES['archivo']) ? $_FILES['archivo']['tmp_name'] : false ]);
+            echo $_FILES['archivo']['tmp_name'];
+         //volvemos a la vista
+         return false;
     }
 
     private function adminVerify(){
