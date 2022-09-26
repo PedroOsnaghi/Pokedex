@@ -2,7 +2,9 @@
 
 require_once('autoload.php');
 
-const DIR_ROOT = "http://localhost/TP_POKEMON/";
+require_once('config/config.php');
+
+
 
 $app = new App();
 

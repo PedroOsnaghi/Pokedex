@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * DB class
+ * 
+ * clase para gestionar la conexion a MySql
+ * 
+ * los parametros se configuran en config/config.php
+ */
+
 
 
 
@@ -17,15 +25,13 @@ class DB{
     public function __construct()
     {
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-        //abrimos archivo de configuracion
-        $config = parse_ini_file("./config/config.ini");
-
+       
         //seteamos valores
-        $this->host = $config['HOST'];
-        $this->dbname = $config['DATABASE'];
-        $this->user = $config['USERNAME'];
-        $this->pwd = $config['PASS'];
-        $this->port = $config['PORT'];
+        $this->host = DB_HOST;
+        $this->dbname = DB_DATABASE;
+        $this->user = DB_USERNAME;
+        $this->pwd = DB_PASS;
+        $this->port = DB_PORT;
 
         try {
             //code...

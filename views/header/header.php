@@ -1,8 +1,3 @@
-<?php
-    // capturamos el valor de la session de administrador para controlar lo que se debe mostrar en las vistas
-    $session_admin = $this->data['session'] ? true : false;
-?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,11 +17,12 @@
     <header>
         <nav class="navbar navbar-dark bg-dark mb-3">
             <div class="container-lg">
-                <a class="navbar-brand  ">Pokedex</a>
-                <?php if($session_admin){ ?> 
+                <a class="navbar-brand" href="<?php DIR_ROOT?>">Pokedex <small><?php echo "v" . APP_VERSION ?></small></a>
+                
+                <?php if($this->session_admin){ ?> 
                             <!-- SI EXISTE SESSION MOSTRAMOS DATOS ADMIN-->
                             <div class="d-flex align-items-center">
-                                <h5 class="navbar-brand"><?php echo"Hola, " . $this->data['session'];?></h5>
+                                <h5 class="navbar-brand"><?php echo"Hola, " . $this->session_admin;?></h5>
                                 <a href="./index.php?c=auth&a=logout" class="p-1 px-3 btn btn-info" title="Cerrar Sesíon">
                                     <i class="fa-solid fa-right-from-bracket"></i>
                                 </a>
@@ -50,17 +46,10 @@
 
         <!-- MENSAJES DE ERROR  DE LOGIN -->
 
-        <?php if(isset($this->data['message']) && $this->data['message']['from'] == 'login'){ 
-            /**
-             * Si hay mensaje en viado del loguin lo mostramos aca
-             */
-            ?>
-            <div class='container-lg'>
-                    <div class='alert alert-danger d-flex align-items-center' role='alert'>
-                        <i class='fa-solid fa-triangle-exclamation me-2'></i>
-                        <div><?php echo $this->data['message']['msg'] ?></div>
-                    </div>
-                </div>                    
-        <?php } ?>                
+        
+        <div class='container-lg'>
+            <?php $this->showAlertFrom('Auth'); ?>  
+        </div>                    
+                    
        
     </header>

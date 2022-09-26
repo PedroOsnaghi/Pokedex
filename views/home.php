@@ -2,8 +2,6 @@
 
 include_once('./views/header/header.php');
 
-
-
 ?>
 <!--HTML:LISTA DE POKEMON -->
 
@@ -23,18 +21,9 @@ include_once('./views/header/header.php');
 
         <!-- MENSAJES -->
         
-        <?php
-            /**
-             * Si llego algun mensaje desde el Manage se muestra aca
-             */
-            if(isset($this->data['message']) && $this->data['message']['from'] == 'manage'){ ?>
-                <div class='container-lg'>
-                    <div class='alert alert-warning d-flex align-items-center' role='alert'>
-                        <i class='fa-solid fa-triangle-exclamation me-2'></i>
-                        <div><?php echo $this->data['message']['msg'] ?></div>
-                    </div> 
-                  </div>       
-        <?php } ?>
+        <div class='container-lg'>
+            <?php $this->showAlertFrom('Manage'); ?>  
+        </div>  
 
 
         <!-- LISTADO -->
@@ -42,34 +31,34 @@ include_once('./views/header/header.php');
         <div id="lista-pokem" class="container-lg">
             <div class="container-lg my-4 ">
                 <div class="row fw-bold text-white text-center bg-primary">
-                    <div class="col-md-1 <?php echo $session_admin? 'd-none d-md-block' : 'col-3' ?> p-2 fs-6 border border-secondary ">Numero</div>
+                    <div class="col-md-1 <?php echo $this->session_admin? 'd-none d-md-block' : 'col-3' ?> p-2 fs-6 border border-secondary ">Numero</div>
                     <div class="col-md-1 col-3 p-2 border border-secondary">Nombre</div>
                     <div class="col-md-1 col-3 p-2 border border-secondary">Tipo</div>
                     <div class="col-md-7 p-2 border border-secondary d-none d-md-block">Descripción</div>
-                    <div class="<?php echo $session_admin? 'col-md-1' : 'col-md-2' ?> col-3 p-2 border border-secondary">Imagen</div>
-                    <?php if ($session_admin) echo "<div class='col-md-1 col-3 p-2 border border-secondary'>Acciones</div>" ?>
+                    <div class="<?php echo $this->session_admin? 'col-md-1' : 'col-md-2' ?> col-3 p-2 border border-secondary">Imagen</div>
+                    <?php if ($this->session_admin) echo "<div class='col-md-1 col-3 p-2 border border-secondary'>Acciones</div>" ?>
                 </div>
                 
                 <div class="row bg-light ">
 
 
-        <?php  foreach($this->data['pokemon'] as $row){ ?>       
+        <?php  foreach($this->list as $row){ ?>       
  
-                        <div class="col-md-1 <?php echo $session_admin? 'd-none d-md-block' : 'col-3' ?> p-2 border d-flex align-content-center justify-content-center flex-wrap"><?php echo $row['numero'] ?></div>
+                        <div class="col-md-1 <?php echo $this->session_admin? 'd-none d-md-block' : 'col-3' ?> p-2 border d-flex align-content-center justify-content-center flex-wrap"><?php echo $row['numero'] ?></div>
                         <div class="col-md-1 col-3 p-2 border d-flex align-content-center justify-content-center flex-wrap">
                             <a href="<?php DIR_ROOT ?>index.php?c=manage&a=get&id=<?php echo $row['id'] ?>" class="text-danger" title="Ver Detalles">
                                  <?php echo $row['nombre'] ?>
                             </a>     
                         </div>
                         <div class="col-md-1 col-3 p-2 border d-flex align-content-center justify-content-center flex-wrap">
-                            <img src="<?php echo DIR_ROOT . $this->data['tipo_folder'] . $row['tipo_imagen'] ?>" width="50px">
+                            <img src="<?php echo DIR_ROOT . TYPE_FILE_FOLDER . $row['tipo_imagen'] ?>" width="50px">
                         </div>
                         <div class="col-md-7 p-2 border d-flex align-content-center justify-content-center flex-wrap d-none d-md-block"><?php echo $row['descripcion'] ?></div>
-                        <div class="<?php echo $session_admin? 'col-md-1' : 'col-md-2' ?> col-3 p-2 border d-flex align-content-center justify-content-center flex-wrap">
-                            <img src="<?php echo DIR_ROOT . $this->data['upload_folder'] . $row['imagen'] ?>" width="50px">
+                        <div class="<?php echo $this->session_admin? 'col-md-1' : 'col-md-2' ?> col-3 p-2 border d-flex align-content-center justify-content-center flex-wrap">
+                            <img src="<?php echo DIR_ROOT . UPLOAD_FILE_FOLDER . $row['imagen'] ?>" width="50px">
                         </div>
                         
-                        <?php if ($session_admin){ 
+                        <?php if ($this->session_admin){ 
                             /**
                              * Mostramos u ocultamos los controles de administrador EDITAR | BORRAR
                              *  
@@ -94,7 +83,7 @@ include_once('./views/header/header.php');
                 </div>
             </div>
 
-            <?php if ($session_admin){ 
+            <?php if ($this->session_admin){ 
                 /**
                  *   mostramos u ocultamos el boton de AGREGAR POKEMON
                  */    

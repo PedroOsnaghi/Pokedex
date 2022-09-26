@@ -51,11 +51,25 @@ class App{
 
     }
 
-    public static function index($param = []){
+    /**
+     * Funcion que lleva al index de la app
+     * 
+     * @param AppMsg $app_msg Parametro que almacena un dato de tipo AppMsg
+     * para enviar mensajes a la clase View.
+     * 
+     * @return Instancia inicial de la App
+     */
+
+    public static function index($app_msg = AppMsg::MSG_NONE){
         
-        $mg = (new Manage())->init($param);
+        return (new manage())->init($app_msg);
 
     }
+
+    /**
+     * Funcion que solicita el renderizado de pantalla 404
+     * cuando no encuentra una clase o un metodo el recepcionar la url
+     */
 
     public static function Error(){
         view::error('404');

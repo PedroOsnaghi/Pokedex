@@ -1,5 +1,8 @@
 <?php
 
+require_once("class/session.php");
+require_once("class/user.php");
+
 /**
  * class Auth
  * 
@@ -9,6 +12,10 @@
 
 
 class Auth{
+
+    
+    private $err;
+    
 
     public function __construct()
     {
@@ -21,12 +28,13 @@ class Auth{
     }
 
     public function login(){
+
+        //verificacion que se se envio usuario y pass
         if(!$this->nombre_usuario && !$this->password){
-            $err = ['message' => ['type' => 'error', 
-                                   'msg' => 'Debe especificar usuario y contraseña',
-                                   'from'=> 'login']
-                    ];
-            App::index($err);      
+
+            //responde con objeto AppMsg
+            $resp = new AppMsg($this, 'Debe especificar usuario y contraseña', AppMsg::MSG_DANGER);
+   
         }else{
 
             $this->user = new User();
@@ -34,22 +42,27 @@ class Auth{
             $this->user->setPassword($this->password);
 
             if($this->user->Authenticate()){
+                
+                //setea session y envia respuesta
                 $this->session->setCurrentUser($this->nombre_usuario);
-                App::index();
+                $resp = AppMsg::MSG_NONE;
+
             }else{
-                $err = ['message' =>['type' => 'error', 
-                                      'msg' => 'Usuario o contraseña inválidos',
-                                      'from'=> 'login']
-                       ];
-            App::index($err);
+                
+                //no pasa autenticacion responde con objeto AppMsg
+                $resp = new AppMsg($this, 'Usuario o contraseña inválidos', AppMsg::MSG_DANGER);
+                
+            }
+
         }
 
-        }  
+        return app::index($resp);
     }
 
     public function logout(){
+        //cierre de session y vuelve a index
         $this->session->closeSession();
-        App::index();
+        app::index();
     }
 
 }
