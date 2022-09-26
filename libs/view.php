@@ -1,15 +1,23 @@
 <?php
 
+/**
+ * View class
+ * 
+ * Clase que se encarga del renderizado de las vistas y gestion de mensages de tipo AppMsg
+ */
+
 class view{
 
-    
-
-    private $data;
+    //almacena un AppMsg o AppMsg::MSG_NONE
     private $msg;
+    //almacena un objeto
     private $object;
+    //almacena una lista
     private $list = [];
+    //almacena una lista de valores ingresados por el usuario en las vistas
+    //y a recargar poder persistirlos en los input de los formularios
     private $value_list = [];
-   
+    //almacena false o el aministrador
     private $session_admin;
     
     
@@ -32,10 +40,21 @@ class view{
         $this->session_admin = $session;
     }
 
+    /**
+     * funcion que se encarga de renderizar un mensaje en pantalla
+     * discriminados por el objeto que lo envia.
+     */
     public function showAlertFrom($from){
         if($this->msg && $this->msg->getFrom() == $from) include('./views/alert/alert.php');
     }
 
+    /**
+     * Funcion que setea el mensaje recibido para que luego
+     * la funcion showAlertFrom la muestre por pantalla
+     * 
+     * @param AppMsg $app_msg Variable de tipo AppMsg
+     * @return true si $app_msg = AppMsg::MSG_NONE
+     */
     public function sendMessage($app_msg){
         
         if ($app_msg == AppMsg::MSG_NONE) return true;
@@ -53,7 +72,7 @@ class view{
 
     /**
      * @param string $nombreVista Nombre del Archivo Vista sin extension.
-     * @param Array $dato Arreglo de envio de datos a vista.
+     * 
      * @return void
      */
     public function render($nombreVista){
@@ -69,7 +88,10 @@ class view{
     }
 
     
-
+    /**
+     * Funcion que renderiza las pantallas de error pudiendo enviar
+     * el codigo de error por la url (para el caso de respuestas del servidor MySql)
+     */
     public static function error($type, $err_code = 0)
     {
         if ($err_code)

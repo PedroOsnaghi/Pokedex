@@ -1,5 +1,20 @@
 <?php
 
+require_once("class/session.php");
+require_once("class/pokemon.php");
+
+/**
+ * Manage class
+ * 
+ * clase que gestiona la logica y validacion del CRUD de Pokemones
+ * posee metodos protegidos para no ser accedidos directamente desde
+ * la url.
+ * 
+ * se comunica con la clase Pokemon para la gestion de datos
+ * 
+ * se comunica con la clase Session para la verificacion de permisos 
+ */
+
 class Manage{
 
     public function __construct()
@@ -11,14 +26,23 @@ class Manage{
        
     }
 
+    /**
+     * Funcion que establece el estado inicial de la App
+     * de haber un mensaje se lo pasa a la vista
+     * 
+     * @param AppMsg $app_msg Variable de tipo AppMsg 
+     * @return Vista Home
+     */
     public function init($app_msg)
     {
         $this->view->setList($this->poke->All());
         $this->view->sendMessage($app_msg);
-       
-        $this->view->render('home');
+       $this->view->render('home');
     }
 
+    /**
+     * Funcion que valida y ejecuta las busquedas
+     */
     public function search()
     {
          //Capturamos el valor a buscar por POST
@@ -48,6 +72,10 @@ class Manage{
          $this->view->render('home');
     }
 
+    /**
+     * Funcion que solicita un objeto Pokemon y lo envia
+     * a la vista Details
+     */
     public function get($id)
     {
         $this->view->setObject($this->poke->getById($id));
@@ -55,6 +83,14 @@ class Manage{
         
     }
 
+    /**
+     * Funcion que solicita la eliminacion de un Pokemon
+     * 
+     * * Protegida con adminVerify
+     * 
+     * @param string $id Variable que almacene el id del pokemon a eliminar
+     * @return vista home Luego de eliminar retorna al home y actualiza las listas
+     */
     public function delete($id)
     {
         if($this->adminVerify())
@@ -78,6 +114,11 @@ class Manage{
 
     }
 
+    /**
+     * Funcion que solicita la vista de Agregar Pokemon
+     * 
+     * * Protegida con adminVerify
+     */
     public function add()
     {
         if($this->adminVerify()){
@@ -85,9 +126,17 @@ class Manage{
              $this->view->setList($this->poke->typeAll());
              $this->view->render('add');
         }
-           
-
+      
     }
+
+    /**
+     * Funcion que solicita la vista de Modificar Pokemon
+     * 
+     * * Protegida con adminVerify
+     * 
+     * @param string $id Variable que almacene el id del pokemon a eliminar
+     * @return vista update
+     */
 
     public function modify($id)
     {
@@ -100,6 +149,14 @@ class Manage{
        
     }
 
+    /**
+     * Funcion que solicita el guardado de modificaciones
+     * 
+     * * Protegida con adminVerify
+     * 
+     * @param string $id Variable que almacene el id del pokemon a guardar
+     * @return vista update con mensaje
+     */
     public function update($id)
     {
         if($this->adminVerify())
@@ -147,6 +204,12 @@ class Manage{
         }
 
     }
+
+    /**
+     * Funcion que solicita el guardado de datos
+     * 
+     * Protegida con adminVerify
+     */
 
     public function save(){
         if($this->adminVerify()){
@@ -227,6 +290,11 @@ class Manage{
          return false;
     }
 
+    /**
+     * Funcion que se encarga de verificar la ssesion de administrador
+     * 
+     * @return true | error: no-access
+     */
     private function adminVerify(){
         if (!$this->session->getCurrentUser()) 
             $this->view->error('no-access');

@@ -23,6 +23,11 @@ class User extends DB{
         $this->password = $value;
     }
 
+    /**
+     * Funcion para autenticacion
+     * 
+     * @retun true | false
+     */
 
     public function Authenticate(){
 

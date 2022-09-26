@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * DB class
+ * 
+ * clase para gestionar la conexion a MySql
+ * 
+ * los parametros se configuran en config/config.php
+ */
+
 
 
 

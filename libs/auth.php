@@ -1,5 +1,8 @@
 <?php
 
+require_once("class/session.php");
+require_once("class/user.php");
+
 /**
  * class Auth
  * 
