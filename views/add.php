@@ -29,7 +29,7 @@
                     <form class="d-flex flex-column flex-md-row" action="./index.php?c=manage&a=save" method="post" enctype="multipart/form-data">
                             <!-- IMAGEN -->    
                             <div class="col-md-4 col px-3 center">
-                                <img class="rounded mx-auto img-thumbnail mb-3 d-block" src="<?php echo DIR_ROOT . UPLOAD_FILE_FOLDER . "default/default.jpg" ?>" alt="" id='preview' max-width="300px"/>
+                                <img class="rounded mx-auto img-thumbnail mb-3 d-block" src="<?php echo DIR_ROOT . UPLOAD_FILE_FOLDER . "default/default.jpg"?>" alt="" id='preview' max-width="300px"/>
                                 <input class="form-control" type="file" name="archivo" id="file" >
                             </div>
                             <div class="col-md-8 col px-3">

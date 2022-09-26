@@ -95,10 +95,7 @@ class Manage{
         {
             $this->view->setObject($this->poke->getById($id));
             $this->view->setList($this->poke->typeAll());
-            $param['upload_folder'] = $this->file->getUploadFolder();
-            $param['tipo_folder'] = $this->tipo_pok_folder;
-            
-            $this->view->render('update', $param);
+            $this->view->render('update');
         }
        
     }
@@ -107,9 +104,10 @@ class Manage{
     {
         if($this->adminVerify())
         {
+            
             //verificamos el acceso desde url sin cargar formulario
-            if(!isset($_POST['numero']))
-                $this->view->error('no-access');  
+            if(!isset($_POST['submit']))
+                return $this->view->error('no-access');  
 
             //recargamos valores viejos
             $this->poke->getById($id);
@@ -136,16 +134,14 @@ class Manage{
             $res = $this->poke->update();
 
             if($res)
-                $this->view->sendMessage($this, 'Pokemon guardado con éxito', AppMsg::MSG_INFO);              
+                $this->view->sendMessage(new AppMsg($this, 'Pokemon guardado con éxito', AppMsg::MSG_SUCCESS));              
             else
-                $this->view->sendMessage($this, 'No se realizó modificaciones el Pokemon', AppMsg::MSG_DANGER);  
+                $this->view->sendMessage(new AppMsg($this, 'No se realizó modificaciones el Pokemon', AppMsg::MSG_DANGER));  
             
            
             $this->view->setObject($this->poke);
             $this->view->setList($this->poke->typeAll());
-            $param['upload_folder'] = $this->file->getUploadFolder();
-            $param['tipo_folder'] = $this->tipo_pok_folder;
-            $this->view->render('update', $param); 
+            $this->view->render('update'); 
 
 
         }

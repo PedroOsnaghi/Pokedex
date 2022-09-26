@@ -7,7 +7,6 @@ var img = document.getElementById('preview');
 
 
 f.addEventListener('change', function(){
-    console.log(document.files.file.value);
     filePreview(this);
 });
 
@@ -27,6 +26,7 @@ function filePreview(input) {
 
             var img = document.getElementById('preview');
             img.src = e.target.result;
+           
             
 
         });
