@@ -1,6 +1,6 @@
 <?php
 
-include_once('./views/header/header.php');
+include_once('views/header/header.php');
 
 ?>
 <!--HTML:LISTA DE POKEMON -->
@@ -121,29 +121,13 @@ include_once('./views/header/header.php');
         
     </main>
 
-  
-        
-</body>
-<script src="<?php echo DIR_ROOT ?>public/js/bootstrap.bundle.js"></script>
+ <!-- FOOTER --> 
+<?php
 
+include_once('views/footer/footer.php');
 
-<!-- SCRIPT PARA HREF DE MODAL -->
-<script>
-    var conf = document.getElementById('btn-confirm');
-    
-    document.querySelectorAll("a[app_tag='btn-delete']").forEach(function(a){
-         a.addEventListener('click', function(){
-        console.log(a.href);
-        conf.href = a.href;
-        });
-    });
-         
-       
-    
-    
-   
-</script>
-</html>
+?> 
+
 
 
 

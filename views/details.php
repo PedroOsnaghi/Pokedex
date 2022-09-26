@@ -1,10 +1,10 @@
  <!-- HEADER -->
 
-<?php include_once('./views/header/header.php') ?>
+<?php include_once('views/header/header.php') ?>
 
 <!-- CONTENT -->
  
-    <div class="container-lg">
+    <div class="container-lg" style="min-height:700px ;">
         <div class="d-flex align-items-center">
             <a href="<?php echo DIR_ROOT ?>" class="btn btn-success me-4">
                 <i class="fa-regular fa-circle-left"></i>
@@ -56,18 +56,12 @@
   
     
     
+ <!-- FOOTER --> 
+ <?php
 
-    
-    
+include_once('views/footer/footer.php');
 
-   
-
-</body>
-
-<script src="<?php echo DIR_ROOT ?>public/js/preview.js"></script>
-
-
-</html>
+?> 
 
 
 

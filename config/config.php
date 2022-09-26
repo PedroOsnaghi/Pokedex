@@ -10,7 +10,7 @@ const DB_DATABASE = 'pokedex';
 //parametros de aplicacion
 
 //ruta raiz
-const DIR_ROOT = "http://localhost/TP_POKEMON/";
+const DIR_ROOT = "http://localhost/pokedex/";
 
 //carpeta donde se guardan archivos subidos
 const UPLOAD_FILE_FOLDER = 'public/img/pokemon/';

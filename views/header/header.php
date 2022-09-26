@@ -8,10 +8,11 @@
     <title>Pokedex</title>
    
     <!-- Fontawesome -->
-    <link rel="stylesheet" href="<?php echo DIR_ROOT ?>/public/css/All.min.css">
+    <link rel="stylesheet" href="<?php echo DIR_ROOT ?>public/css/All.min.css">
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?php echo DIR_ROOT ?>/public/css/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo DIR_ROOT ?>public/css/bootstrap.css">
     
+
 </head>
 <body>
     <header>
